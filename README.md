@@ -8,10 +8,10 @@
 
 ```bash
 mkdir -p corelia/.local/config-releases
-bash corelia/scripts/compile-config.sh sber-npf-corelia-config corelia/.local/config-releases/sber-release
+bash corelia/scripts/compile-config.sh sber-npf-corelia-config corelia/.local/config-releases/sber-release sber-npf-platform-v/ac.json
 ```
 
-Для Compose укажите абсолютный `CORELIA_CUSTOMER_CONFIG` на `.../sber-release/corelia`; для локального JVM — `CORELIA_CONFIG_PATH`. В разработке можно направить загрузчик прямо на этот каталог. Подробный контракт: [configuration.md](../corelia/docs/configuration.md).
+Для Compose укажите абсолютный `CORELIA_CUSTOMER_CONFIG` на `.../sber-release/corelia`; для локального JVM — `CORELIA_CONFIG_PATH`. В разработке можно направить загрузчик прямо на этот каталог, задав также `CORELIA_PLATFORM_V_AC_PATH` на исходный `sber-npf-platform-v/ac.json`. Соответствие прав ролям берётся только из этого файла; компилятор включает одинаковые копии в runtime и платформенный пакет. Подробный контракт: [configuration.md](../corelia/docs/configuration.md).
 
 В GraphQL хранится единственный исходный текст операций Corelia. `operation-permissions.json` содержит исходные ограничения доступа без body. Полученный fragment должен объединяться с полным файлом permissions платформы с сохранением остальных операций. На текущем шаге автоматическая установка и объединение с платформой не выполняются. Совместимость исходных тел проверяется тестом компилятора.
 

@@ -206,6 +206,17 @@
         "snils": {
           "trim": true
         }
+      },
+      "authorization": {
+        "createPermission": "PdsContract:create",
+        "editPermission": "DocumentVersion:commit",
+        "executorRole": "document_operator",
+        "editableStatuses": [
+          "IN_WORK"
+        ],
+        "initialUploadStatuses": [
+          "CREATED"
+        ]
       }
     },
     {
@@ -382,6 +393,17 @@
         "snils": {
           "trim": true
         }
+      },
+      "authorization": {
+        "createPermission": "KidOps:create",
+        "editPermission": "DocumentVersion:commit",
+        "executorRole": "document_operator",
+        "editableStatuses": [
+          "IN_WORK"
+        ],
+        "initialUploadStatuses": [
+          "CREATED"
+        ]
       }
     }
   ]
