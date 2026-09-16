@@ -1,0 +1,1 @@
+query searchDocumentCommand($cond: String) { searchDocumentCommand(cond: $cond) { elems { commandKey requestHash response } count } }

@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "compatibility": {
+    "corelia": ">=0.1.0 <1.0.0"
+  },
+  "operations": {
+    "commitDocumentAttributes": {
+      "file": "graphql/commitDocumentAttributes.graphql",
+      "multiaggregate": true
+    },
+    "commitDocumentFileDelete": {
+      "file": "graphql/commitDocumentFileDelete.graphql",
+      "multiaggregate": true
+    },
+    "commitDocumentFileReplace": {
+      "file": "graphql/commitDocumentFileReplace.graphql",
+      "multiaggregate": true
+    },
+    "commitDocumentFileUpload": {
+      "file": "graphql/commitDocumentFileUpload.graphql",
+      "multiaggregate": true
+    },
+    "commitDocumentNoChange": {
+      "file": "graphql/commitDocumentNoChange.graphql",
+      "multiaggregate": true
+    },
+    "commitKidOpsAttributes": {
+      "file": "graphql/commitKidOpsAttributes.graphql",
+      "multiaggregate": true
+    },
+    "createAttachment": {
+      "file": "graphql/createAttachment.graphql",
+      "multiaggregate": false
+    },
+    "deleteAttachment": {
+      "file": "graphql/deleteAttachment.graphql",
+      "multiaggregate": false
+    },
+    "initializeDocumentVersion": {
+      "file": "graphql/initializeDocumentVersion.graphql",
+      "multiaggregate": false
+    },
+    "refDocumentTypeListGet": {
+      "file": "graphql/refDocumentTypeListGet.graphql",
+      "multiaggregate": false
+    },
+    "replaceAttachmentVersion": {
+      "file": "graphql/replaceAttachmentVersion.graphql",
+      "multiaggregate": false
+    },
+    "searchAttachment": {
+      "file": "graphql/searchAttachment.graphql",
+      "multiaggregate": false
+    },
+    "searchDocument": {
+      "file": "graphql/searchDocument.graphql",
+      "multiaggregate": false
+    },
+    "searchDocumentCommand": {
+      "file": "graphql/searchDocumentCommand.graphql",
+      "multiaggregate": false
+    },
+    "searchDocumentProcessSettings": {
+      "file": "graphql/searchDocumentProcessSettings.graphql",
+      "multiaggregate": false
+    },
+    "searchDocumentVersion": {
+      "file": "graphql/searchDocumentVersion.graphql",
+      "multiaggregate": false
+    },
+    "searchPdsContract": {
+      "file": "graphql/searchPdsContract.graphql",
+      "multiaggregate": false
+    },
+    "updatePdsContract": {
+      "file": "graphql/updatePdsContract.graphql",
+      "multiaggregate": false
+    }
+  },
+  "documentTypes": [
+    {
+      "id": "PDS_CONTRACT",
+      "title": "Договор ПДС",
+      "schemaVersion": 1,
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "contractDate",
+          "contractNumber",
+          "snils"
+        ],
+        "properties": {
+          "contractDate": {
+            "type": "string",
+            "title": "Дата договора",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "format": "date",
+            "minLength": 1
+          },
+          "contractNumber": {
+            "type": "string",
+            "title": "Номер договора",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "snils": {
+            "type": "string",
+            "title": "СНИЛС",
+            "pattern": "^\\d{3}-\\d{3}-\\d{3} \\d{2}$",
+            "minLength": 1
+          }
+        }
+      },
+      "ui": {
+        "columns": [
+          "contractDate",
+          "contractNumber",
+          "snils"
+        ],
+        "fields": [
+          "contractDate",
+          "contractNumber",
+          "snils"
+        ],
+        "searchFields": [
+          "contractDate",
+          "contractNumber",
+          "snils"
+        ],
+        "sortFields": [
+          "contractDate",
+          "contractNumber"
+        ],
+        "dateField": "contractDate"
+      },
+      "storage": {
+        "provider": "platform-v",
+        "entity": "PdsContract",
+        "details": "pdsContract",
+        "fields": {
+          "contractDate": "contractDate",
+          "contractNumber": "contractNumber",
+          "snils": "snils"
+        },
+        "operations": {
+          "search": "searchDocument",
+          "update": "commitDocumentAttributes"
+        }
+      },
+      "workflow": {
+        "processes": {},
+        "actions": {},
+        "creationSource": "platform-settings",
+        "externalFields": [
+          "contractNumber"
+        ],
+        "completion": {
+          "statusField": "approvalStatus",
+          "assigneeField": "assignee",
+          "assignmentStatuses": [
+            "IN_WORK"
+          ],
+          "assignmentCodes": [
+            "взять в работу",
+            "take_on"
+          ],
+          "autoStart": true
+        },
+        "terminalStatuses": [
+          "APPROVED",
+          "REJECTED"
+        ]
+      },
+      "attachments": {
+        "enabled": true,
+        "initialRequired": false,
+        "maxCount": 2147483647
+      },
+      "presentation": {
+        "statuses": {
+          "CREATED": "Создан",
+          "IN_WORK": "В работе",
+          "ON_APPROVAL": "На согласовании",
+          "NEEDS_REVISION": "Отправлено на доработку",
+          "APPROVED": "Согласован",
+          "REJECTED": "Отклонен"
+        },
+        "aliases": {
+          "на доработке": "NEEDS_REVISION",
+          "отклонён": "REJECTED"
+        },
+        "tones": {
+          "NEEDS_REVISION": "warning",
+          "REJECTED": "error"
+        },
+        "initialStatus": "CREATED"
+      },
+      "normalization": {
+        "contractDate": {
+          "trim": true
+        },
+        "contractNumber": {
+          "trim": true
+        },
+        "snils": {
+          "trim": true
+        }
+      }
+    },
+    {
+      "id": "KID_OPS",
+      "title": "КИД ОПС",
+      "schemaVersion": 1,
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "contractNumber",
+          "contractDate",
+          "signingYear",
+          "lastName",
+          "firstName",
+          "snils"
+        ],
+        "properties": {
+          "contractNumber": {
+            "type": "string",
+            "title": "Номер договора",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^ОПС-[0-9]{3}-[0-9]{4}-[0-9]{7}$"
+          },
+          "contractDate": {
+            "type": "string",
+            "title": "Дата договора",
+            "maxLength": 10,
+            "minLength": 1,
+            "format": "date"
+          },
+          "signingYear": {
+            "type": "integer",
+            "title": "Год подписания",
+            "minimum": 1000,
+            "maximum": 9999
+          },
+          "lastName": {
+            "type": "string",
+            "title": "Фамилия",
+            "maxLength": 40,
+            "minLength": 1
+          },
+          "firstName": {
+            "type": "string",
+            "title": "Имя",
+            "maxLength": 255,
+            "minLength": 1
+          },
+          "middleName": {
+            "type": "string",
+            "title": "Отчество",
+            "maxLength": 256,
+            "minLength": 0
+          },
+          "snils": {
+            "type": "string",
+            "title": "СНИЛС",
+            "maxLength": 14,
+            "minLength": 1,
+            "pattern": "^[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}$"
+          }
+        }
+      },
+      "ui": {
+        "columns": [
+          "contractNumber",
+          "contractDate",
+          "signingYear",
+          "lastName",
+          "firstName",
+          "middleName",
+          "snils"
+        ],
+        "fields": [
+          "contractNumber",
+          "contractDate",
+          "signingYear",
+          "lastName",
+          "firstName",
+          "middleName",
+          "snils"
+        ],
+        "searchFields": [
+          "contractNumber",
+          "contractDate",
+          "signingYear",
+          "lastName",
+          "firstName",
+          "middleName",
+          "snils"
+        ],
+        "sortFields": [
+          "contractDate",
+          "contractNumber"
+        ],
+        "dateField": "contractDate"
+      },
+      "storage": {
+        "provider": "platform-v",
+        "entity": "KidOps",
+        "details": "kidOps",
+        "fields": {
+          "contractNumber": "contractNumber",
+          "contractDate": "contractDate",
+          "signingYear": "signingYear",
+          "lastName": "lastName",
+          "firstName": "firstName",
+          "middleName": "middleName",
+          "snils": "snils"
+        },
+        "operations": {
+          "search": "searchDocument",
+          "update": "commitKidOpsAttributes"
+        }
+      },
+      "workflow": {
+        "processes": {},
+        "actions": {},
+        "creationSource": "platform-settings",
+        "externalFields": [
+          "contractNumber"
+        ],
+        "completion": {
+          "statusField": "approvalStatus",
+          "assigneeField": "assignee",
+          "assignmentStatuses": [
+            "IN_WORK"
+          ],
+          "assignmentCodes": [
+            "взять в работу",
+            "take_on"
+          ],
+          "autoStart": true
+        },
+        "terminalStatuses": [
+          "STORED"
+        ]
+      },
+      "attachments": {
+        "enabled": true,
+        "initialRequired": true,
+        "maxCount": 2147483647
+      },
+      "presentation": {
+        "statuses": {
+          "CREATED": "Создан",
+          "IN_WORK": "В работе",
+          "STORED": "На хранении"
+        },
+        "aliases": {},
+        "tones": {},
+        "initialStatus": "CREATED"
+      },
+      "normalization": {
+        "contractNumber": {
+          "trim": true
+        },
+        "contractDate": {
+          "trim": true
+        },
+        "lastName": {
+          "trim": true
+        },
+        "firstName": {
+          "trim": true
+        },
+        "middleName": {
+          "trim": true,
+          "nullAsEmpty": true,
+          "defaultEmpty": true
+        },
+        "snils": {
+          "trim": true
+        }
+      }
+    }
+  ]
+}

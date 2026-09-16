@@ -1,0 +1,1 @@
+mutation initializeDocumentVersion($id: ID!, $token: String!, $compare: _CompareDocumentInput!, $version: _CreateDocumentVersionInput!) { packet { updateDocument(input: { id: $id, version: 1, changeToken: $token }, compare: $compare) { id } createDocumentVersion(input: $version) { id } } }

@@ -1,0 +1,1 @@
+query searchDocumentVersion($cond: String, $offset: Int, $limit: Int) { searchDocumentVersion(cond: $cond, offset: $offset, limit: $limit) { elems { id documentId version schemaVersion attributes attachments createdBy createdAt closedAt } count } }

@@ -1,0 +1,1 @@
+mutation createAttachment($input: _CreateAttachmentInput!) { packet { createAttachment(input: $input) { id attachmentId logicalAttachmentId documentId fileName contentType size storageReference version current uploadedAt } } }

@@ -1,0 +1,161 @@
+[
+  {
+    "name": "refDocumentTypeListGet",
+    "checkForAnyPrivilege": [
+      "DocumentType:read"
+    ]
+  },
+  {
+    "name": "searchDocumentProcessSettings",
+    "checkForAnyPrivilege": [
+      "DocumentProcessSettings:read"
+    ]
+  },
+  {
+    "name": "searchPdsContract",
+    "checkForAnyPrivilege": [
+      "PdsContract:read"
+    ]
+  },
+  {
+    "name": "updatePdsContract",
+    "checkForAnyPrivilege": [
+      "PdsContract:update"
+    ]
+  },
+  {
+    "name": "createAttachment",
+    "allowEmptyChecks": false,
+    "disableJwtVerification": false,
+    "checkForAnyPrivilege": [
+      "Attachment:create"
+    ],
+    "checkSelects": [
+      {
+        "conditionValue": "it.document.documentId == ${input.documentId} && it.status == 'CREATED' && it.document.createdBy == ${jwt:preferred_username}",
+        "orderValue": "0",
+        "typeName": "PdsContract",
+        "description": "Only assigned operator can create attachments while document is in work"
+      }
+    ]
+  },
+  {
+    "name": "searchAttachment",
+    "checkForAnyPrivilege": [
+      "Attachment:read"
+    ]
+  },
+  {
+    "name": "replaceAttachmentVersion",
+    "allowEmptyChecks": false,
+    "disableJwtVerification": false,
+    "checkForAnyPrivilege": [
+      "Attachment:update",
+      "Attachment:create"
+    ],
+    "checkSelects": [
+      {
+        "conditionValue": "it.$id == ${currentAttachmentId} && it.documentId == ${input.documentId} && it.current == true",
+        "orderValue": "0",
+        "typeName": "Attachment",
+        "description": "Only current attachment version can be replaced"
+      },
+      {
+        "conditionValue": "it.document.documentId == ${input.documentId} && it.status == 'IN_WORK'",
+        "orderValue": "1",
+        "typeName": "PdsContract",
+        "description": "Only assigned operator can replace attachments while document is in work"
+      }
+    ]
+  },
+  {
+    "name": "deleteAttachment",
+    "allowEmptyChecks": false,
+    "disableJwtVerification": false,
+    "checkForAnyPrivilege": [
+      "Attachment:delete"
+    ],
+    "checkSelects": [
+      {
+        "conditionValue": "it.$id == ${id} && it.documentId == ${documentId}",
+        "orderValue": "0",
+        "typeName": "Attachment",
+        "description": "Only attachments of the requested document can be deleted"
+      },
+      {
+        "conditionValue": "it.document.documentId == ${documentId} && it.status == 'IN_WORK'",
+        "orderValue": "1",
+        "typeName": "PdsContract",
+        "description": "Only assigned operator can delete attachments while document is in work"
+      }
+    ]
+  },
+  {
+    "name": "searchDocumentVersion",
+    "checkForAnyPrivilege": [
+      "Document:read"
+    ]
+  },
+  {
+    "name": "searchDocumentCommand",
+    "checkForAnyPrivilege": [
+      "Document:read"
+    ]
+  },
+  {
+    "name": "initializeDocumentVersion",
+    "checkForAnyPrivilege": [
+      "Document:read"
+    ],
+    "checkSelects": [
+      {
+        "conditionValue": "it.$id == ${id} && (it.version == null || it.version == 0)",
+        "orderValue": "0",
+        "typeName": "Document",
+        "description": "Initialize only a document without application versions"
+      }
+    ]
+  },
+  {
+    "name": "commitDocumentAttributes",
+    "checkForAnyPrivilege": [
+      "DocumentVersion:commit"
+    ]
+  },
+  {
+    "name": "commitDocumentNoChange",
+    "checkForAnyPrivilege": [
+      "DocumentVersion:commit"
+    ]
+  },
+  {
+    "name": "commitDocumentFileUpload",
+    "checkForAnyPrivilege": [
+      "DocumentVersion:commit"
+    ]
+  },
+  {
+    "name": "commitDocumentFileReplace",
+    "checkForAnyPrivilege": [
+      "DocumentVersion:commit"
+    ]
+  },
+  {
+    "name": "commitDocumentFileDelete",
+    "checkForAnyPrivilege": [
+      "DocumentVersion:commit"
+    ]
+  },
+  {
+    "name": "searchDocument",
+    "checkForAnyPrivilege": [
+      "Document:read"
+    ]
+  },
+  {
+    "name": "commitKidOpsAttributes",
+    "checkForAnyPrivilege": [
+      "DocumentVersion:commit"
+    ]
+  }
+]

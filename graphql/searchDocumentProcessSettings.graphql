@@ -1,0 +1,1 @@
+query searchDocumentProcessSettings($offset: Int, $limit: Int, $cond: String) { searchDocumentProcessSettings(offset: $offset, limit: $limit, cond: $cond) { elems { id documentType { id name } processId enabled } count } }

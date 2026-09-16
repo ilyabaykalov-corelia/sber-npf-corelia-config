@@ -1,0 +1,1 @@
+mutation updatePdsContract($input: _UpdatePdsContractInput!) { packet { updatePdsContract(input: $input) { id status } } }

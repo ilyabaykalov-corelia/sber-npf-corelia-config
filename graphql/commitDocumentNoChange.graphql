@@ -1,0 +1,1 @@
+mutation commitDocumentNoChange($document: _UpdateDocumentInput!, $compare: _CompareDocumentInput!, $command: _CreateDocumentCommandInput!) { packet { updateDocument(input: $document, compare: $compare) { id } createDocumentCommand(input: $command) { id } } }

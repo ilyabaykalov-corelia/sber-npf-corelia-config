@@ -1,0 +1,1 @@
+mutation deleteAttachment($id: ID!, $documentId: String!) { packet { deleteAttachment(id: $id) } }

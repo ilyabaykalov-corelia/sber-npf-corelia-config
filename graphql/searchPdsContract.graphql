@@ -1,0 +1,1 @@
+query searchPdsContract($offset: Int, $limit: Int, $cond: String, $sort: [_SortCriterionSpecification!]) { searchPdsContract(offset: $offset, limit: $limit, cond: $cond, sort: $sort) { elems { id document { id documentId documentType { id name } createdBy createdAt version changeToken } contractDate contractNumber snils status } count } }

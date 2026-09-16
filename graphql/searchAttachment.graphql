@@ -1,0 +1,1 @@
+query searchAttachment($cond: String, $offset: Int, $limit: Int) { searchAttachment(cond: $cond, offset: $offset, limit: $limit) { elems { id attachmentId logicalAttachmentId documentId fileName contentType size storageReference version current uploadedAt } count } }
