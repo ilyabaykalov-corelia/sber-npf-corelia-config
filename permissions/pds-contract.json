@@ -1,0 +1,1 @@
+{"id":"PDS_CONTRACT","authorization":{"createPermission":"PdsContract:create","editPermission":"DocumentVersion:commit","executorRole":"document_operator","editableStatuses":["IN_WORK"],"initialUploadStatuses":["CREATED"]}}
