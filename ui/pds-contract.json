@@ -1,0 +1,1 @@
+{"id":"PDS_CONTRACT","ui":{"columns":["contractDate","contractNumber","snils"],"fields":["contractDate","contractNumber","snils"],"searchFields":["contractDate","contractNumber","snils"],"sortFields":["contractDate","contractNumber"],"dateField":"contractDate"}}
