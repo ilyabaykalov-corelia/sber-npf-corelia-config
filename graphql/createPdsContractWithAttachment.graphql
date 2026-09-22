@@ -1,0 +1,1 @@
+mutation createPdsContractWithAttachment($document: _CreateDocumentInput!, $input: _CreatePdsContractInput!, $file: _CreateAttachmentInput!, $command: _CreateDocumentCommandInput!) { packet { createDocument(input: $document) { id documentId } createPdsContract(input: $input) { id status } createAttachment(input: $file) { id } createDocumentCommand(input: $command) { id } } }
