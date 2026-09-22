@@ -49,6 +49,32 @@ def indexed(entries):
     return result
 
 
+def runtime_fragments(release, config, directory, keys):
+    source = config['sources'][directory]
+    root = safe_file(release, 'corelia/configuration.json').parent / source
+    if not root.is_dir():
+        raise ValueError(f'Missing runtime {directory} fragments')
+    result = {}
+    for path in sorted(root.rglob('*.json')):
+        value = read_json(path)
+        if not isinstance(value, dict) or not isinstance(value.get('id'), str):
+            raise ValueError(f'Invalid runtime {directory} fragment: {path.name}')
+        if value['id'] in result:
+            raise ValueError(f'Duplicate runtime {directory} fragment: {value["id"]}')
+        if not keys.issubset(value):
+            raise ValueError(f'Invalid runtime {directory} fragment: {path.name}')
+        result[value['id']] = value
+    return result
+
+
+def runtime_operation_file(release, config, operation):
+    runtime = (release / 'corelia').resolve(strict=True)
+    path = (runtime / config['sources']['operations'] / operation['file']).resolve(strict=True)
+    if not path.is_relative_to(runtime) or not path.is_file():
+        raise ValueError(f'Operation file outside runtime package: {operation["id"]}')
+    return path
+
+
 def assemble(release, platform, output):
     release, platform = Path(release).resolve(strict=True), Path(platform).resolve(strict=True)
     output = Path(output).absolute()
@@ -65,16 +91,21 @@ def assemble(release, platform, output):
     if sha(config_bytes) != manifest['configurationSha256']:
         raise ValueError('Configuration checksum mismatch')
     files['corelia/configuration.json'] = config_bytes
+    if config.get('schemaVersion') != 2 or not isinstance(config.get('sources'), dict):
+        raise ValueError('Unsupported runtime configuration schema')
+    operations = runtime_fragments(release, config, 'operations', {'id', 'file'})
+    document_types = runtime_fragments(release, config, 'entities', {'id', 'workflow'})
     ac = safe_file(release, 'corelia/platform-v-ac.json').read_bytes()
     if sha(ac) != manifest['accessControlSha256'] or ac != safe_file(platform, 'ac.json').read_bytes():
         raise ValueError('Access control differs from compiled release')
     files['corelia/platform-v-ac.json'] = ac
     fragment = indexed(read_json(safe_file(release, 'platform-v/graphql-permissions.fragment.json')))
-    if set(fragment) != set(config['operations']) or set(fragment) != set(manifest['operationSha256']):
+    if set(fragment) != set(operations) or set(fragment) != set(manifest['operationSha256']):
         raise ValueError('Operation set differs from compiled release')
-    for name, operation in config['operations'].items():
-        relative = 'corelia/' + operation['file']
-        content = safe_file(release, relative).read_bytes()
+    for name, operation in operations.items():
+        path = runtime_operation_file(release, config, operation)
+        relative = path.relative_to(release).as_posix()
+        content = path.read_bytes()
         if sha(content) != manifest['operationSha256'][name] or content.decode('utf-8') != fragment[name]['body']:
             raise ValueError(f'Operation checksum/body mismatch: {name}')
         files[relative] = content
@@ -98,9 +129,11 @@ def assemble(release, platform, output):
             raise ValueError(f'Platform permission rules differ: {name}')
         permissions[name] = permission
     platform_files['model.graphql-permissions.json'] = (json.dumps(list(permissions.values()), ensure_ascii=False, indent=2) + '\n').encode()
-    types = {t['id']: t for t in config['documentTypes']}
-    if set(types) != {'PDS_CONTRACT', 'KID_OPS'} or len(config['documentTypes']) != 2:
+    types = document_types
+    if set(types) != {'PDS_CONTRACT', 'KID_OPS'} or len(types) != 2:
         raise ValueError('This solution supports exactly the two current Sber document types')
+    if 'dictionary/DocumentType.json' not in platform_files or 'dictionary/DocumentProcessSettings.json' not in platform_files:
+        raise ValueError('Platform source does not contain required DocumentType and DocumentProcessSettings dictionaries')
     dictionary = parse_json(platform_files['dictionary/DocumentType.json'])['objects']
     if len(dictionary) != 2 or {t['id'] for t in dictionary} != set(types):
         raise ValueError('Document type dictionary differs from runtime')
