@@ -89,9 +89,10 @@
     },
     "creationAction": "CREATE",
     "creationSource": "configuration",
-    "externalFields": [
-      "contractNumber"
-    ],
+  "externalFields": [
+    "contractNumber",
+    "snils"
+  ],
     "completion": {
       "statusField": "approvalStatus",
       "assigneeField": "assignee",
@@ -115,13 +116,17 @@
   },
   "presentation": {
     "statuses": {
-      "DRAFT": "Черновик",
+      "CREATED": "Создан",
       "IN_WORK": "В работе",
       "STORED": "На хранении"
     },
     "aliases": {},
-    "tones": {},
-    "initialStatus": "DRAFT"
+    "tones": {
+      "CREATED": "info",
+      "IN_WORK": "info",
+      "STORED": "success"
+    },
+    "initialStatus": "CREATED"
   },
   "normalization": {
     "contractNumber": {

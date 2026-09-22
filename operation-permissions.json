@@ -24,13 +24,6 @@
     ]
   },
   {
-    "name": "createPdsContractWithAttachment",
-    "checkForAnyPrivilege": [
-      "PdsContract:create",
-      "Attachment:create"
-    ]
-  },
-  {
     "name": "updatePdsContract",
     "checkForAnyPrivilege": [
       "PdsContract:update"
@@ -45,7 +38,7 @@
     ],
     "checkSelects": [
       {
-        "conditionValue": "it.document.documentId == ${input.documentId} && it.status == 'DRAFT' && it.document.createdBy == ${jwt:preferred_username}",
+        "conditionValue": "it.document.documentId == ${input.documentId} && it.status == 'CREATED' && it.document.createdBy == ${jwt:preferred_username}",
         "orderValue": "0",
         "typeName": "PdsContract",
         "description": "Only assigned operator can create attachments while document is in work"
