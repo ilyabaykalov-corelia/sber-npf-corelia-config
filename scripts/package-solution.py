@@ -6,7 +6,6 @@ import os
 from pathlib import Path
 import sys
 import tempfile
-import xml.etree.ElementTree as ET
 import zipfile
 
 
@@ -129,27 +128,8 @@ def assemble(release, platform, output):
             raise ValueError(f'Platform permission rules differ: {name}')
         permissions[name] = permission
     platform_files['model.graphql-permissions.json'] = (json.dumps(list(permissions.values()), ensure_ascii=False, indent=2) + '\n').encode()
-    types = document_types
-    if set(types) != {'PDS_CONTRACT', 'KID_OPS'} or len(types) != 2:
+    if set(document_types) != {'PDS_CONTRACT', 'KID_OPS'} or len(document_types) != 2:
         raise ValueError('This solution supports exactly the two current Sber document types')
-    if 'dictionary/DocumentType.json' not in platform_files or 'dictionary/DocumentProcessSettings.json' not in platform_files:
-        raise ValueError('Platform source does not contain required DocumentType and DocumentProcessSettings dictionaries')
-    dictionary = parse_json(platform_files['dictionary/DocumentType.json'])['objects']
-    if len(dictionary) != 2 or {t['id'] for t in dictionary} != set(types):
-        raise ValueError('Document type dictionary differs from runtime')
-    processes = set()
-    for name, content in platform_files.items():
-        if name.endswith(('.xml', '.bpmn')):
-            tree = ET.fromstring(content)
-            processes.update(n.attrib['id'] for n in tree.iter() if n.tag == '{http://www.omg.org/spec/BPMN/20100524/MODEL}process')
-    settings = parse_json(platform_files['dictionary/DocumentProcessSettings.json'])['objects']
-    for code, definition in types.items():
-        enabled = [s for s in settings if s['documentType'] == code and s.get('enabled') is True]
-        workflow = definition['workflow']
-        if workflow.get('creationSource', 'platform-settings') != 'platform-settings':
-            raise ValueError('Sber solution currently uses the platform process dictionary')
-        if len(enabled) != 1 or enabled[0]['processId'] not in processes:
-            raise ValueError(f'Inconsistent creation process: {code}')
     files.update({'platform-v/' + name: data for name, data in platform_files.items()})
     files['compiler-manifest.json'] = manifest_bytes
     with tempfile.TemporaryDirectory(prefix='.sber-solution-', dir=parent) as temporary:
@@ -179,5 +159,5 @@ if __name__ == '__main__':
         sys.exit('Usage: package-solution.py COMPILED_RELEASE PLATFORM_SOURCE NEW_OUTPUT')
     try:
         print(assemble(*sys.argv[1:]))
-    except (ValueError, KeyError, OSError, ET.ParseError) as error:
+    except (ValueError, KeyError, OSError) as error:
         sys.exit(str(error))

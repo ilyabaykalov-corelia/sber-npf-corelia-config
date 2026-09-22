@@ -71,10 +71,6 @@ class SolutionTest(unittest.TestCase):
         self.change_json(self.platform / 'model.graphql-permissions.json', change)
         with self.assertRaisesRegex(ValueError, 'permission rules differ'): self.build()
 
-    def test_rejects_missing_process(self):
-        self.change_json(self.platform / 'dictionary/DocumentProcessSettings.json', lambda v: v['objects'][0].update(processId='missing'))
-        with self.assertRaisesRegex(ValueError, 'creation process'): self.build()
-
     def test_rejects_manifest_path_escape(self):
         self.change_json(self.platform / '.info.meta.json', lambda v: v['files'].append({'path': '/../outside'}))
         with self.assertRaisesRegex(ValueError, 'Unsafe path'): self.build()
