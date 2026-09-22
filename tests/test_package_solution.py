@@ -40,6 +40,20 @@ class SolutionTest(unittest.TestCase):
 
     def test_complete_reproducible_package_preserves_unrelated_permissions(self):
         self.build()
+        runtime_files = {
+            path.relative_to(self.release / 'corelia').as_posix()
+            for path in (self.release / 'corelia').rglob('*') if path.is_file()
+        }
+        packaged_runtime_files = {
+            path.relative_to(self.output / 'corelia').as_posix()
+            for path in (self.output / 'corelia').rglob('*') if path.is_file()
+        }
+        self.assertEqual(packaged_runtime_files, runtime_files)
+        for relative in runtime_files:
+            self.assertEqual(
+                (self.output / 'corelia' / relative).read_bytes(),
+                (self.release / 'corelia' / relative).read_bytes(),
+            )
         before = module.indexed(module.read_json(self.platform / 'model.graphql-permissions.json'))
         after = module.indexed(module.read_json(self.output / 'platform-v/model.graphql-permissions.json'))
         fragment = module.indexed(module.read_json(self.release / 'platform-v/graphql-permissions.fragment.json'))

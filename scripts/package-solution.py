@@ -74,6 +74,17 @@ def runtime_operation_file(release, config, operation):
     return path
 
 
+def runtime_files(release):
+    root = safe_file(release, 'corelia/configuration.json').parent.resolve(strict=True)
+    for path in sorted(root.rglob('*')):
+        if not path.is_file():
+            continue
+        resolved = path.resolve(strict=True)
+        if not resolved.is_relative_to(root):
+            raise ValueError(f'Runtime file outside package: {path.relative_to(root)}')
+        yield path.relative_to(root).as_posix(), resolved.read_bytes()
+
+
 def assemble(release, platform, output):
     release, platform = Path(release).resolve(strict=True), Path(platform).resolve(strict=True)
     output = Path(output).absolute()
@@ -108,6 +119,8 @@ def assemble(release, platform, output):
         if sha(content) != manifest['operationSha256'][name] or content.decode('utf-8') != fragment[name]['body']:
             raise ValueError(f'Operation checksum/body mismatch: {name}')
         files[relative] = content
+    for relative, content in runtime_files(release):
+        files['corelia/' + relative] = content
     metadata_bytes = safe_file(platform, '.info.meta.json').read_bytes()
     metadata = parse_json(metadata_bytes)
     platform_files = {'.info.meta.json': metadata_bytes}
