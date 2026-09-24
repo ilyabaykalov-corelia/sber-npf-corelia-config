@@ -31,8 +31,8 @@
       "signingYear": {
         "type": "integer",
         "title": "Год подписания",
-        "minimum": 1000,
-        "maximum": 9999
+        "min": 2010,
+        "max": 2200
       },
       "lastName": {
         "type": "string",
@@ -94,7 +94,7 @@
     "snils"
   ],
     "completion": {
-      "statusField": "approvalStatus",
+      "statusField": "status",
       "assigneeField": "assignee",
       "assignmentStatuses": [
         "IN_WORK"
