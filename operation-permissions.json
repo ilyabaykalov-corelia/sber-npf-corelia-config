@@ -18,6 +18,12 @@
     ]
   },
   {
+    "name": "createPdsContract",
+    "checkForAnyPrivilege": [
+      "PdsContract:create"
+    ]
+  },
+  {
     "name": "updatePdsContract",
     "checkForAnyPrivilege": [
       "PdsContract:update"
@@ -150,6 +156,12 @@
     "name": "searchDocument",
     "checkForAnyPrivilege": [
       "Document:read"
+    ]
+  },
+  {
+    "name": "createKidOps",
+    "checkForAnyPrivilege": [
+      "KidOps:create"
     ]
   },
   {

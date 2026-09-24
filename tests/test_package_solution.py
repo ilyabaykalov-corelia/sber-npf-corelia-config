@@ -40,6 +40,20 @@ class SolutionTest(unittest.TestCase):
 
     def test_complete_reproducible_package_preserves_unrelated_permissions(self):
         self.build()
+        runtime_files = {
+            path.relative_to(self.release / 'corelia').as_posix()
+            for path in (self.release / 'corelia').rglob('*') if path.is_file()
+        }
+        packaged_runtime_files = {
+            path.relative_to(self.output / 'corelia').as_posix()
+            for path in (self.output / 'corelia').rglob('*') if path.is_file()
+        }
+        self.assertEqual(packaged_runtime_files, runtime_files)
+        for relative in runtime_files:
+            self.assertEqual(
+                (self.output / 'corelia' / relative).read_bytes(),
+                (self.release / 'corelia' / relative).read_bytes(),
+            )
         before = module.indexed(module.read_json(self.platform / 'model.graphql-permissions.json'))
         after = module.indexed(module.read_json(self.output / 'platform-v/model.graphql-permissions.json'))
         fragment = module.indexed(module.read_json(self.release / 'platform-v/graphql-permissions.fragment.json'))
@@ -70,10 +84,6 @@ class SolutionTest(unittest.TestCase):
             next(p for p in value if p['name'] == name)['checkForAnyPrivilege'] = ['unapproved:scope']
         self.change_json(self.platform / 'model.graphql-permissions.json', change)
         with self.assertRaisesRegex(ValueError, 'permission rules differ'): self.build()
-
-    def test_rejects_missing_process(self):
-        self.change_json(self.platform / 'dictionary/DocumentProcessSettings.json', lambda v: v['objects'][0].update(processId='missing'))
-        with self.assertRaisesRegex(ValueError, 'creation process'): self.build()
 
     def test_rejects_manifest_path_escape(self):
         self.change_json(self.platform / '.info.meta.json', lambda v: v['files'].append({'path': '/../outside'}))

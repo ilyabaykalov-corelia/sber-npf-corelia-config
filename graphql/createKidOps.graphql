@@ -1,0 +1,1 @@
+mutation createKidOps($document: _CreateDocumentInput!, $input: _CreateKidOpsInput!, $command: _CreateDocumentCommandInput!) { packet { createDocument(input: $document) { id documentId documentType { id name } } createKidOps(input: $input) { id status } createDocumentCommand(input: $command) { id } } }
