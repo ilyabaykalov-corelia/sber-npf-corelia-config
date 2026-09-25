@@ -1,0 +1,9 @@
+{
+  "theme": {
+    "primaryColor": "#149447"
+  },
+  "assets": {
+    "logo": "/sber-npf-logo.png",
+    "favicon": "/sber-npf-favicon.ico"
+  }
+}
