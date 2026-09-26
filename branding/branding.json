@@ -1,0 +1,10 @@
+{
+  "title": "Сбер НПФ",
+  "theme": {
+    "primaryColor": "#149447"
+  },
+  "assets": {
+    "logo": "/logo.png",
+    "favicon": "/favicon.ico"
+  }
+}
