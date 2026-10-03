@@ -1,12 +1,35 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "compatibility": {
     "corelia": ">=0.1.0 <1.0.0"
   },
+  "permissionGrants": {
+    "document:PDS_CONTRACT:create": ["app_owner", "document_operator"],
+    "document:PDS_CONTRACT:read": ["app_owner", "document_operator"],
+    "document:PDS_CONTRACT:edit": ["app_owner", "document_operator"],
+    "attachment:PDS_CONTRACT:add": ["app_owner", "document_operator"],
+    "workflow:PDS_CONTRACT:start": ["app_owner", "document_operator"],
+    "workflow:PDS_CONTRACT:take_on": ["app_owner", "document_operator"],
+    "document:KID_OPS:create": ["app_owner", "document_operator"],
+    "document:KID_OPS:read": ["app_owner", "document_operator"],
+    "document:KID_OPS:edit": ["app_owner", "document_operator"],
+    "attachment:KID_OPS:add": ["app_owner", "document_operator"],
+    "workflow:KID_OPS:start": ["app_owner", "document_operator"],
+    "workflow:KID_OPS:take_on": ["app_owner", "document_operator"],
+    "workflow-definition:edit": ["app_owner"],
+    "workflow-definition:publish": ["app_owner"]
+  },
+  "branding": {
+    "applicationName": "Сбер НПФ",
+    "logo": "/logo.png",
+    "favicon": "/favicon.ico",
+    "theme": {
+      "primaryColor": "#149447"
+    }
+  },
   "sources": {
-    "entities": "data-model/entities",
-    "ui": "ui",
-    "operations": "operations",
+    "documents": "documents",
+    "workflows": "workflows",
     "permissions": "permissions"
   }
 }

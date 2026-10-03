@@ -1,52 +1,38 @@
 # Конфигурация Corelia для СберНПФ
 
-Пакет заказчика: схемы ПДС/КИД, UI metadata, статические операции и метаданные их permissions. Ветка разработки: `feature/configuration-structure-refactor`. Самостоятельных секретов и параметров окружения нет.
+Это один внешний customer configuration package Corelia Schema V3. Он содержит
+два вида документов — Договор ПДС и КИД ОПС — и не содержит DataSpace GraphQL,
+Platform V `ac.json`, operation permissions или platform packaging scripts.
 
-`configuration.json` — manifest Schema V2. Сущности находятся в `data-model/entities`, UI — в `ui`, authorization — в `permissions`, операции — в `operations`; каждый файл описывает одну логическую единицу. Runtime-пакет после компиляции остаётся нормализованным и не зависит от исходного разбиения файлов.
+## Структура
 
-Сопровождается вместе с `../sber-npf-platform-v`, но не включается в JAR/Docker продукта. На текущем шаге существующие BPMN, справочники и модель не изменены; процесс создания выбирается через DocumentProcessSettings.
+- `documents/` — атрибуты, presentation, UI, search и storage policy;
+- `workflows/` — process key, BPMN resource, start actions и task actions;
+- `permissions/` — ссылки на нейтральные Corelia permissions и lifecycle policy;
+- `bpmn/` — BPMN definitions Flowable;
+- `branding/` — logo, favicon и legacy-compatible web branding assets.
 
-Сборка из родительской папки:
+`configuration.json` содержит permission grants для ролей проверенного JWT.
+Текущая поставка использует только существующие роли `app_owner` и
+`document_operator`; изменение этих grants — отдельное изменение доступа и
+должно проверяться на согласованном стенде.
 
-```bash
-mkdir -p corelia/.local/config-releases
-bash corelia/scripts/compile-config.sh sber-npf-corelia-config corelia/.local/config-releases/sber-release sber-npf-platform-v/ac.json
-```
+## Сборка runtime package
 
-Для Compose укажите абсолютный `CORELIA_CUSTOMER_CONFIG` на `.../sber-release/corelia`; для локального JVM — `CORELIA_CONFIG_PATH`. В разработке можно направить загрузчик прямо на этот каталог, задав также `CORELIA_PLATFORM_V_AC_PATH` на исходный `sber-npf-platform-v/ac.json`. Соответствие прав ролям берётся только из этого файла; компилятор включает одинаковые копии в runtime и платформенный пакет. Подробный контракт: [configuration.md](../corelia/docs/configuration.md).
-
-В GraphQL хранится единственный исходный текст операций Corelia. `operation-permissions.json` содержит исходные ограничения доступа без body. Полученный fragment должен объединяться с полным файлом permissions платформы с сохранением остальных операций. На текущем шаге автоматическая установка и объединение с платформой не выполняются. Совместимость исходных тел проверяется тестом компилятора.
-
-Первоначальные правила и имена полей перенесены из реализации СберНПФ. Для ПДС format=date теперь проверяет существование календарной даты. Для КИД сохраняются обязательное начальное вложение, форматы, длины, нормализация и ключ создания. `maxCount=2147483647` сохраняет прежнее отсутствие прикладного ограничения числа файлов; это не рекомендация эксплуатационного лимита.
-
-## Единый комплект СберНПФ
-
-Сейчас настраиваются Договор ПДС, КИД ОПС и временный нейтральный вид
-`PHASE6_DESIGNER_SMOKE`. Последний использует существующую совместимую модель
-Platform V `PdsContract` только как временный транспорт для финального smoke
-сценария PHASE 6: Corelia отображает собственные нейтральные поля, а Flowable
-запускает `phase6_designer_smoke`. Вид не предназначен для бизнес-эксплуатации
-и должен быть удалён вместе с compatibility layer после завершения программы.
-customer-a/customer-b в тестах продукта — синтетические примеры будущей
-расширяемости, не отдельные поставки.
-
-После компиляции runtime-пакета соберите согласованный комплект (из общей папки):
+Из родительской папки:
 
 ```bash
-python3 sber-npf-corelia-config/scripts/package-solution.py \
-  corelia/.local/config-releases/sber-release \
-  sber-npf-platform-v \
-  corelia/.local/config-releases/sber-solution
+cd corelia
+mkdir -p .local/config-releases
+bash scripts/compile-config.sh ../sber-npf-corelia-config .local/config-releases/sber-release
 ```
 
-Выход должен отсутствовать. `corelia/` — runtime для CORELIA_CUSTOMER_CONFIG; `platform-v.zip` — импортный архив; `platform-v/` — его распакованное содержимое; `solution-manifest.json` — SHA-256 всех файлов поставки. В комплект не копируются .env, Git, секреты или файлы вне платформенного манифеста. Исходные репозитории не изменяются.
+Выходной каталог должен отсутствовать. Получившийся
+`.local/config-releases/sber-release/corelia` задаётся как
+`CORELIA_CUSTOMER_CONFIG` для Docker Compose либо `CORELIA_CONFIG_PATH` для
+локального запуска сервисов. Сборка не публикует BPMN, не мигрирует документы
+и не обращается к Platform V.
 
-Сборщик проверяет checksum компилятора, совпадение ac.json, словарь двух видов и включённые процессы BPMN. Тела операций берутся из скомпилированного fragment; несовпадение правил доступа останавливает сборку, остальные операции сохраняются. ZIP воспроизводим при неизменных входных файлах. СберНПФ сохраняет выбор процесса через DocumentProcessSettings.
-
-Проверка сборщика:
-
-```bash
-python3 sber-npf-corelia-config/tests/test_package_solution.py corelia/.local/config-releases/sber-release
-```
-
-Сборка не публикует модель, не мигрирует данные и не проверяет семантику SDK/BPM. Архив сохраняет текущий LCUI платформы, в том числе его старые настройки; его состав не означает готовность LCUI к Corelia API. Перед реальным импортом требуется проверка на согласованном тестовом стенде и совместимости уже запущенных процессов.
+Перед production deployment проверьте создание ПДС и КИД, выдачу задач
+Flowable, права `app_owner` и `document_operator`, загрузку вложений и
+отображение branding в web-клиенте.

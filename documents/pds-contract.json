@@ -1,0 +1,35 @@
+{
+  "id": "PDS_CONTRACT",
+  "title": "Договор ПДС",
+  "schemaVersion": 1,
+  "attributes": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["contractDate", "contractNumber", "snils"],
+    "properties": {
+      "contractDate": {"type": "string", "title": "Дата договора", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "format": "date", "minLength": 1},
+      "contractNumber": {"type": "string", "title": "Номер договора", "minLength": 1, "maxLength": 64},
+      "snils": {"type": "string", "title": "СНИЛС", "pattern": "^\\d{3}-\\d{3}-\\d{3} \\d{2}$", "minLength": 1}
+    }
+  },
+  "presentation": {
+    "statuses": {"CREATED": "Создан", "IN_WORK": "В работе", "ON_APPROVAL": "На согласовании", "NEEDS_REVISION": "Отправлено на доработку", "APPROVED": "Согласован", "REJECTED": "Отклонен"},
+    "aliases": {"на доработке": "NEEDS_REVISION", "отклонён": "REJECTED"},
+    "tones": {"CREATED": "info", "IN_WORK": "info", "ON_APPROVAL": "warning", "NEEDS_REVISION": "warning", "APPROVED": "success", "REJECTED": "error"},
+    "initialStatus": "CREATED"
+  },
+  "normalization": {"contractDate": {"trim": true}, "contractNumber": {"trim": true}, "snils": {"trim": true}},
+  "ui": {
+    "createForm": {"fields": ["contractDate", "contractNumber", "snils"]},
+    "viewCard": {"fields": ["contractDate", "contractNumber", "snils"]},
+    "editCard": {"fields": ["contractDate", "contractNumber", "snils"]},
+    "table": {"columns": ["contractDate", "contractNumber", "snils"]},
+    "dateField": "contractDate",
+    "masks": {"snils": "000-000-000 00"},
+    "initialValues": {"contractDate": "now"},
+    "sections": [],
+    "tabs": []
+  },
+  "search": {"filterableFields": ["contractDate", "contractNumber", "snils"], "sortableFields": ["contractDate", "contractNumber"], "indexHints": ["contractNumber", "snils"]},
+  "attachments": {"enabled": true, "initialRequired": false, "maxCount": 2147483647}
+}

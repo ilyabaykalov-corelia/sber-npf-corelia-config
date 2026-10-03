@@ -1,1 +1,0 @@
-mutation createPdsContract($document: _CreateDocumentInput!, $input: _CreatePdsContractInput!, $command: _CreateDocumentCommandInput!) { packet { createDocument(input: $document) { id documentId } createPdsContract(input: $input) { id status } createDocumentCommand(input: $command) { id } } }

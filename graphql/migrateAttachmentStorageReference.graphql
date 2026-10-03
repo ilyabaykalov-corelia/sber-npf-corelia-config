@@ -1,1 +1,0 @@
-mutation migrateAttachmentStorageReference($id: ID!, $storageReference: String!) { packet { updateAttachment(input: { id: $id, storageReference: $storageReference }) { id attachmentId logicalAttachmentId documentId fileName contentType size storageReference version current uploadedAt } } }
