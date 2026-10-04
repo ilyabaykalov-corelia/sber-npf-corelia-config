@@ -5,30 +5,176 @@
   "attributes": {
     "type": "object",
     "additionalProperties": false,
-    "required": ["contractNumber", "contractDate", "signingYear", "lastName", "firstName", "snils"],
+    "required": [
+      "contractNumber",
+      "contractDate",
+      "signingYear",
+      "lastName",
+      "firstName",
+      "snils"
+    ],
     "properties": {
-      "contractNumber": {"type": "string", "title": "Номер договора", "maxLength": 64, "minLength": 1, "pattern": "^ОПС-[0-9]{3}-[0-9]{4}-[0-9]{7}$"},
-      "contractDate": {"type": "string", "title": "Дата договора", "maxLength": 10, "minLength": 1, "format": "date"},
-      "signingYear": {"type": "integer", "title": "Год подписания", "min": 2010, "max": 2200},
-      "lastName": {"type": "string", "title": "Фамилия", "maxLength": 40, "minLength": 1},
-      "firstName": {"type": "string", "title": "Имя", "maxLength": 255, "minLength": 1},
-      "middleName": {"type": "string", "title": "Отчество", "maxLength": 256, "minLength": 0},
-      "snils": {"type": "string", "title": "СНИЛС", "maxLength": 14, "minLength": 1, "pattern": "^[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}$"}
+      "contractNumber": {
+        "type": "string",
+        "title": "Номер договора",
+        "maxLength": 64,
+        "minLength": 1,
+        "pattern": "^ОПС-[0-9]{3}-[0-9]{4}-[0-9]{7}$"
+      },
+      "contractDate": {
+        "type": "string",
+        "title": "Дата договора",
+        "maxLength": 10,
+        "minLength": 1,
+        "format": "date"
+      },
+      "signingYear": {
+        "type": "integer",
+        "title": "Год подписания",
+        "min": 2010,
+        "max": 2200
+      },
+      "lastName": {
+        "type": "string",
+        "title": "Фамилия",
+        "maxLength": 40,
+        "minLength": 1
+      },
+      "firstName": {
+        "type": "string",
+        "title": "Имя",
+        "maxLength": 255,
+        "minLength": 1
+      },
+      "middleName": {
+        "type": "string",
+        "title": "Отчество",
+        "maxLength": 256,
+        "minLength": 0
+      },
+      "snils": {
+        "type": "string",
+        "title": "СНИЛС",
+        "maxLength": 14,
+        "minLength": 1,
+        "pattern": "^[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2}$"
+      }
     }
   },
-  "presentation": {"statuses": {"CREATED": "Создан", "IN_WORK": "В работе", "STORED": "На хранении"}, "aliases": {}, "tones": {"CREATED": "info", "IN_WORK": "info", "STORED": "success"}, "initialStatus": "CREATED"},
-  "normalization": {"contractNumber": {"trim": true}, "contractDate": {"trim": true}, "lastName": {"trim": true}, "firstName": {"trim": true}, "middleName": {"trim": true, "nullAsEmpty": true, "defaultEmpty": true}, "snils": {"trim": true}},
+  "presentation": {
+    "statuses": {
+      "CREATED": "Создан",
+      "IN_WORK": "В работе",
+      "STORED": "На хранении"
+    },
+    "aliases": {},
+    "tones": {
+      "CREATED": "info",
+      "IN_WORK": "info",
+      "STORED": "success"
+    },
+    "initialStatus": "CREATED"
+  },
+  "normalization": {
+    "contractNumber": {
+      "trim": true
+    },
+    "contractDate": {
+      "trim": true
+    },
+    "lastName": {
+      "trim": true
+    },
+    "firstName": {
+      "trim": true
+    },
+    "middleName": {
+      "trim": true,
+      "nullAsEmpty": true,
+      "defaultEmpty": true
+    },
+    "snils": {
+      "trim": true
+    }
+  },
   "ui": {
-    "createForm": {"fields": ["contractNumber", "contractDate", "signingYear", "lastName", "firstName", "middleName", "snils"]},
-    "viewCard": {"fields": ["contractNumber", "contractDate", "signingYear", "lastName", "firstName", "middleName", "snils"]},
-    "editCard": {"fields": ["contractNumber", "contractDate", "signingYear", "lastName", "firstName", "middleName", "snils"]},
-    "table": {"columns": ["contractNumber", "contractDate", "signingYear", "lastName", "firstName", "middleName", "snils"]},
+    "createForm": {
+      "fields": [
+        "contractNumber",
+        "contractDate",
+        "signingYear",
+        "lastName",
+        "firstName",
+        "middleName",
+        "snils"
+      ]
+    },
+    "viewCard": {
+      "fields": [
+        "contractNumber",
+        "contractDate",
+        "signingYear",
+        "lastName",
+        "firstName",
+        "middleName",
+        "snils"
+      ]
+    },
+    "editCard": {
+      "fields": [
+        "contractNumber",
+        "contractDate",
+        "signingYear",
+        "lastName",
+        "firstName",
+        "middleName",
+        "snils"
+      ]
+    },
+    "table": {
+      "columns": [
+        "contractNumber",
+        "contractDate",
+        "signingYear",
+        "lastName",
+        "firstName",
+        "middleName",
+        "snils"
+      ]
+    },
     "dateField": "contractDate",
-    "masks": {"contractNumber": "ОПС-000-0000-0000000", "snils": "000-000-000 00"},
-    "initialValues": {"contractDate": "now"},
+    "masks": {
+      "contractNumber": "ОПС-000-0000-0000000",
+      "snils": "000-000-000 00"
+    },
+    "initialValues": {
+      "contractDate": "now"
+    },
     "sections": [],
     "tabs": []
   },
-  "search": {"filterableFields": ["contractNumber", "contractDate", "signingYear", "lastName", "firstName", "middleName", "snils"], "sortableFields": ["contractDate", "contractNumber"], "indexHints": ["contractNumber", "snils"]},
-  "attachments": {"enabled": true, "initialRequired": true, "maxCount": 2147483647}
+  "search": {
+    "filterableFields": [
+      "contractNumber",
+      "contractDate",
+      "signingYear",
+      "lastName",
+      "firstName",
+      "middleName",
+      "snils"
+    ],
+    "sortableFields": [
+      "contractDate",
+      "contractNumber"
+    ],
+    "indexHints": [
+      "contractNumber",
+      "snils"
+    ]
+  },
+  "attachments": {
+    "enabled": true,
+    "initialRequired": true,
+    "maxCount": 2147483647
+  }
 }

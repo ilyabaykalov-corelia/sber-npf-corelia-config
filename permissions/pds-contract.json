@@ -1,7 +1,16 @@
 {
   "id": "PDS_CONTRACT",
-  "permissions": {"create": "document:PDS_CONTRACT:create", "read": "document:PDS_CONTRACT:read", "edit": "document:PDS_CONTRACT:edit", "attachmentAdd": "attachment:PDS_CONTRACT:add"},
+  "permissions": {
+    "create": "document:PDS_CONTRACT:create",
+    "read": "document:PDS_CONTRACT:read",
+    "edit": "document:PDS_CONTRACT:edit",
+    "attachmentAdd": "attachment:PDS_CONTRACT:add"
+  },
   "executorRole": "document_operator",
-  "editableStatuses": ["IN_WORK"],
-  "initialUploadStatuses": ["CREATED"]
+  "editableStatuses": [
+    "IN_WORK"
+  ],
+  "initialUploadStatuses": [
+    "CREATED"
+  ]
 }

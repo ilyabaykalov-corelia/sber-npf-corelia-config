@@ -1,7 +1,16 @@
 {
   "id": "KID_OPS",
-  "permissions": {"create": "document:KID_OPS:create", "read": "document:KID_OPS:read", "edit": "document:KID_OPS:edit", "attachmentAdd": "attachment:KID_OPS:add"},
+  "permissions": {
+    "create": "document:KID_OPS:create",
+    "read": "document:KID_OPS:read",
+    "edit": "document:KID_OPS:edit",
+    "attachmentAdd": "attachment:KID_OPS:add"
+  },
   "executorRole": "document_operator",
-  "editableStatuses": ["IN_WORK"],
-  "initialUploadStatuses": ["CREATED"]
+  "editableStatuses": [
+    "IN_WORK"
+  ],
+  "initialUploadStatuses": [
+    "CREATED"
+  ]
 }

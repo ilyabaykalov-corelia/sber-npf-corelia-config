@@ -19,14 +19,6 @@
     "workflow-definition:edit": ["app_owner"],
     "workflow-definition:publish": ["app_owner"]
   },
-  "branding": {
-    "applicationName": "Сбер НПФ",
-    "logo": "/logo.png",
-    "favicon": "/favicon.ico",
-    "theme": {
-      "primaryColor": "#149447"
-    }
-  },
   "sources": {
     "documents": "documents",
     "workflows": "workflows",
