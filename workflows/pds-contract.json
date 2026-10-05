@@ -1,0 +1,70 @@
+{
+  "id": "PDS_CONTRACT",
+  "processKey": "pds_contract_process",
+  "bpmnFile": "bpmn/pds-contract-process.bpmn20.xml",
+  "startActions": [
+    "create"
+  ],
+  "tasks": {
+    "UserTask_CheckDocument": {
+      "actions": [
+        {
+          "code": "take_on",
+          "label": "Взять в работу",
+          "status": "IN_WORK",
+          "tone": "info"
+        }
+      ]
+    }
+  },
+  "completion": {
+    "statusField": "status",
+    "assigneeField": "assignee",
+    "assignmentStatuses": [
+      "IN_WORK"
+    ],
+    "assignmentCodes": [
+      "взять в работу",
+      "take_on"
+    ],
+    "autoStart": true
+  },
+  "commands": {
+    "takeInWork": {
+      "from": [
+        "CREATED",
+        "NEEDS_REVISION"
+      ],
+      "to": "IN_WORK"
+    },
+    "submit": {
+      "from": [
+        "IN_WORK"
+      ],
+      "to": "ON_APPROVAL"
+    },
+    "approve": {
+      "from": [
+        "ON_APPROVAL"
+      ],
+      "to": "APPROVED"
+    },
+    "returnForRevision": {
+      "from": [
+        "ON_APPROVAL"
+      ],
+      "to": "NEEDS_REVISION"
+    },
+    "reject": {
+      "from": [
+        "IN_WORK",
+        "ON_APPROVAL"
+      ],
+      "to": "REJECTED"
+    }
+  },
+  "terminalStatuses": [
+    "APPROVED",
+    "REJECTED"
+  ]
+}

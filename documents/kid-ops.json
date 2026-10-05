@@ -2,7 +2,7 @@
   "id": "KID_OPS",
   "title": "КИД ОПС",
   "schemaVersion": 1,
-  "schema": {
+  "attributes": {
     "type": "object",
     "additionalProperties": false,
     "required": [
@@ -61,59 +61,6 @@
       }
     }
   },
-  "storage": {
-    "provider": "platform-v",
-    "entity": "KidOps",
-    "details": "kidOps",
-    "fields": {
-      "contractNumber": "contractNumber",
-      "contractDate": "contractDate",
-      "signingYear": "signingYear",
-      "lastName": "lastName",
-      "firstName": "firstName",
-      "middleName": "middleName",
-      "snils": "snils"
-    },
-    "operations": {
-      "search": "searchDocument",
-      "create": "createKidOps",
-      "update": "commitKidOpsAttributes"
-    }
-  },
-  "workflow": {
-    "processes": {
-      "create": "Process_kid_ops_storage"
-    },
-    "actions": {
-      "CREATE": "create"
-    },
-    "creationAction": "CREATE",
-    "creationSource": "configuration",
-  "externalFields": [
-    "contractNumber",
-    "snils"
-  ],
-    "completion": {
-      "statusField": "status",
-      "assigneeField": "assignee",
-      "assignmentStatuses": [
-        "IN_WORK"
-      ],
-      "assignmentCodes": [
-        "взять в работу",
-        "take_on"
-      ],
-      "autoStart": true
-    },
-    "terminalStatuses": [
-      "STORED"
-    ]
-  },
-  "attachments": {
-    "enabled": true,
-    "initialRequired": true,
-    "maxCount": 2147483647
-  },
   "presentation": {
     "statuses": {
       "CREATED": "Создан",
@@ -149,5 +96,85 @@
     "snils": {
       "trim": true
     }
+  },
+  "ui": {
+    "createForm": {
+      "fields": [
+        "contractNumber",
+        "contractDate",
+        "signingYear",
+        "lastName",
+        "firstName",
+        "middleName",
+        "snils"
+      ]
+    },
+    "viewCard": {
+      "fields": [
+        "contractNumber",
+        "contractDate",
+        "signingYear",
+        "lastName",
+        "firstName",
+        "middleName",
+        "snils"
+      ]
+    },
+    "editCard": {
+      "fields": [
+        "contractNumber",
+        "contractDate",
+        "signingYear",
+        "lastName",
+        "firstName",
+        "middleName",
+        "snils"
+      ]
+    },
+    "table": {
+      "columns": [
+        "contractNumber",
+        "contractDate",
+        "signingYear",
+        "lastName",
+        "firstName",
+        "middleName",
+        "snils"
+      ]
+    },
+    "dateField": "contractDate",
+    "masks": {
+      "contractNumber": "ОПС-000-0000-0000000",
+      "snils": "000-000-000 00"
+    },
+    "initialValues": {
+      "contractDate": "now"
+    },
+    "sections": [],
+    "tabs": []
+  },
+  "search": {
+    "filterableFields": [
+      "contractNumber",
+      "contractDate",
+      "signingYear",
+      "lastName",
+      "firstName",
+      "middleName",
+      "snils"
+    ],
+    "sortableFields": [
+      "contractDate",
+      "contractNumber"
+    ],
+    "indexHints": [
+      "contractNumber",
+      "snils"
+    ]
+  },
+  "attachments": {
+    "enabled": true,
+    "initialRequired": true,
+    "maxCount": 2147483647
   }
 }

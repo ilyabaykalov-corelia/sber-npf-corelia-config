@@ -1,0 +1,37 @@
+{
+  "id": "KID_OPS",
+  "processKey": "kid_ops_process",
+  "bpmnFile": "bpmn/kid-ops-process.bpmn20.xml",
+  "startActions": [
+    "create"
+  ],
+  "completion": {
+    "statusField": "status",
+    "assigneeField": "assignee",
+    "assignmentStatuses": [
+      "IN_WORK"
+    ],
+    "assignmentCodes": [
+      "взять в работу",
+      "take_on"
+    ],
+    "autoStart": true
+  },
+  "commands": {
+    "takeInWork": {
+      "from": [
+        "CREATED"
+      ],
+      "to": "IN_WORK"
+    },
+    "store": {
+      "from": [
+        "IN_WORK"
+      ],
+      "to": "STORED"
+    }
+  },
+  "terminalStatuses": [
+    "STORED"
+  ]
+}

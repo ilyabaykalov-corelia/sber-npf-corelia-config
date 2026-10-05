@@ -1,7 +1,8 @@
 {
   "title": "Сбер НПФ",
   "theme": {
-    "primaryColor": "#149447"
+    "primaryColor": "#149447",
+    "backgroundColor": "#f7f8f5"
   },
   "assets": {
     "logo": "/logo.png",
