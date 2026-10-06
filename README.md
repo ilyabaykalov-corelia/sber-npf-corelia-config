@@ -43,3 +43,9 @@ python3 sber-npf-corelia-config/tests/test_package_solution.py corelia/.local/co
 ```
 
 Сборка не публикует модель, не мигрирует данные и не проверяет семантику SDK/BPM. Архив сохраняет текущий LCUI платформы, в том числе его старые настройки; его состав не означает готовность LCUI к Corelia API. Перед реальным импортом требуется проверка на согласованном тестовом стенде и совместимости уже запущенных процессов.
+
+## Kafka: создание документов
+
+`integrations/kafka-document-creation.json` задаёт consumer group, технического исполнителя и связи Kafka topic с `typeCode`. В нём нет endpoint и токенов: endpoint задаётся `CORELIA_KAFKA_BOOTSTRAP_SERVERS`, а service account — runtime-параметром `CORELIA_KAFKA_OAUTH_CLIENT_ID` и Docker secret. Для СберНПФ настроены `sber-npf.documents.pds-contract.create` → `PDS_CONTRACT` и `sber-npf.documents.kid-ops.create` → `KID_OPS`.
+
+Сообщение может быть одиночным JSON-объектом с `requestId` (UUID), `attributes` (объект по schema выбранного вида) и необязательным `initialAttachment` в том же формате, что HTTP API, либо batch-конвертом `{"items":[<одиночное-сообщение>, ...]}`. Каждый элемент batch обрабатывается независимо; невалидный элемент журналируется с индексом, а остальные продолжают создаваться. Неизвестные поля и сообщения, не прошедшие schema validation, журналируются без тела сообщения и подтверждаются consumer-ом, чтобы не остановить обработку следующих записей. Повторное сообщение с тем же `requestId` идемпотентно.

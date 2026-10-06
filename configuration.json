@@ -7,6 +7,7 @@
     "entities": "data-model/entities",
     "ui": "ui",
     "operations": "operations",
-    "permissions": "permissions"
+    "permissions": "permissions",
+    "integrations": "integrations"
   }
 }

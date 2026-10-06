@@ -1,0 +1,26 @@
+{
+  "id": "kafkaDocumentCreation",
+  "consumerGroup": "sber-npf-corelia-document-creation",
+  "actor": {
+    "id": "5a35023e-1722-4d54-b5a3-35e87591a7d6",
+    "login": "service-account-corelia-service",
+    "fullName": "Service account corelia-service",
+    "roles": [
+      "app_owner",
+      "htm-app_FreeFlowUserExtended",
+      "htm-app_FreeFlowUser",
+      "htm-app_Manager"
+    ],
+    "taskUsername": "service-account-corelia-service"
+  },
+  "routes": [
+    {
+      "topic": "sber-npf.documents.pds-contract.create",
+      "typeCode": "PDS_CONTRACT"
+    },
+    {
+      "topic": "sber-npf.documents.kid-ops.create",
+      "typeCode": "KID_OPS"
+    }
+  ]
+}
